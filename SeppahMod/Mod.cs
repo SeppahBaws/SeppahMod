@@ -10,7 +10,7 @@ using GoodCompany;
 
 namespace SeppahMod
 {
-	[BepInPlugin("com.github.seppahbaws.seppahmod", "SeppahMod", "1.0.0.0")]
+	[BepInPlugin("com.github.seppahbaws.seppahmod", "SeppahMod", "0.1.0.0")]
     public class Mod : BaseUnityPlugin
     {
 	    void Awake()
@@ -31,18 +31,34 @@ namespace SeppahMod
 	    }
     }
 
-	[HarmonyPatch(typeof(GameRoot))]
+    [HarmonyPatch(typeof(GoodCompany.GUI.MainMenu))]
+    [HarmonyPatch("OnSessionStarted")]
+    [HarmonyPatch(new Type[] { })]
+	class MainMenu_OnSessionStarted_Patch
+    {
+	    static void Postfix(GoodCompany.GUI.MainMenu __instance, ref CanvasGroup ____buttonsCanvasGroup)
+	    {
+			Debug.Log("Session Started");
+	    }
+    }
+
+    [HarmonyPatch(typeof(GameRoot))]
 	[HarmonyPatch("Update")]
 	[HarmonyPatch(new Type[] { })]
     class GameRoot_Update_Patch
     {
+	    private static float zoom = -1.0f;
 	    static void Postfix(GameRoot __instance)
 	    {
 		    Vector2 scroll = Input.mouseScrollDelta;
 
-		    if (__instance.MainCamera.MainCamera.fieldOfView > 1)
-			    __instance.MainCamera.MainCamera.fieldOfView -= scroll.y;
-		    Debug.Log("zoom: " + __instance.MainCamera.MainCamera.fieldOfView);
+		    if (zoom == -1.0f)
+			    zoom = __instance.MainCamera.MainCamera.fieldOfView;
+
+		    zoom -= scroll.y;
+		    zoom = Mathf.Clamp(zoom, 3.0f, 50.0f);
+
+		    __instance.MainCamera.MainCamera.fieldOfView = zoom;
 	    }
 	}
 

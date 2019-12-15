@@ -10,7 +10,7 @@ It's mainly just for exploring the possibilities through modding.
 ### For using the mod
 
 1. Download the latest version of BepInEx from the [github page](https://github.com/BepInEx/BepInEx/releases) and extract it in the root of the game folder.
-2. Copy `SeppahMod.dll` in the `BepInEx/plugins` folder.
+2. Download `SeppahMod.dll` from the [Releases](https://github.com/SeppahBaws/SeppahMod/releases) page and copy it in the `BepInEx/plugins` folder.
 
 ### For developing the mod
 
